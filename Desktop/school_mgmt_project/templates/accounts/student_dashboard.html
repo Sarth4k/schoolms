@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% block title %}Student Dashboard - SchoolMS{% endblock %}
+{% block content %}
+<div class="row g-4">
+    <!-- Profile Card -->
+    <div class="col-md-4">
+        <div class="card p-4 text-center">
+            {% if student.profile_photo %}
+                <img src="{{ student.profile_photo.url }}" class="rounded-circle mx-auto mb-3" width="100" height="100" style="object-fit:cover;">
+            {% else %}
+                <div class="rounded-circle bg-secondary mx-auto mb-3 d-flex align-items-center justify-content-center" style="width:100px;height:100px;">
+                    <i class="bi bi-person-fill text-white" style="font-size:2.5rem;"></i>
+                </div>
+            {% endif %}
+            <h5 class="fw-bold mb-0">{{ user.get_full_name }}</h5>
+            <p class="text-muted small mb-2">{{ user.email }}</p>
+            <span class="badge bg-info text-dark">Student</span>
+            <a href="{% url 'student-profile' %}" class="btn btn-outline-primary btn-sm mt-3 w-100">
+                <i class="bi bi-pencil me-1"></i>Edit Profile
+            </a>
+        </div>
+    </div>
+
+    <!-- Admission Status -->
+    <div class="col-md-8">
+        <div class="card p-4 mb-3">
+            <h5 class="fw-bold mb-3"><i class="bi bi-clipboard-check me-2"></i>Admission Status</h5>
+            {% if admission %}
+                {% if admission.status == 'pending' %}
+                    <div class="alert alert-warning mb-0">
+                        <i class="bi bi-hourglass-split me-2"></i>
+                        <strong>Pending Review</strong> — Your admission application is being reviewed by the admin.
+                    </div>
+                {% elif admission.status == 'approved' %}
+                    <div class="alert alert-success mb-0">
+                        <i class="bi bi-check-circle-fill me-2"></i>
+                        <strong>Approved!</strong> — Your admission is approved. You can now enroll in subjects.
+                        <div class="mt-2">
+                            <a href="{% url 'subject-list' %}" class="btn btn-success btn-sm">Browse Subjects</a>
+                        </div>
+                    </div>
+                {% elif admission.status == 'rejected' %}
+                    <div class="alert alert-danger mb-0">
+                        <i class="bi bi-x-circle-fill me-2"></i>
+                        <strong>Rejected</strong> — Your admission was not approved.
+                        {% if admission.reason %}<p class="mb-0 mt-1">Reason: {{ admission.reason }}</p>{% endif %}
+                    </div>
+                {% endif %}
+            {% else %}
+                <div class="alert alert-secondary mb-0">No admission application found.</div>
+            {% endif %}
+        </div>
+
+        <!-- Enrolled Subjects -->
+        {% if admission.status == 'approved' %}
+        <div class="card p-4">
+            <h5 class="fw-bold mb-3"><i class="bi bi-book me-2"></i>My Enrolled Subjects</h5>
+            {% if enrolled_subjects %}
+                <div class="row g-2">
+                    {% for subject in enrolled_subjects %}
+                    <div class="col-md-6">
+                        <div class="border rounded p-2 d-flex align-items-center">
+                            <span class="badge bg-primary me-2">{{ subject.code }}</span>
+                            <span class="fw-semibold">{{ subject.name }}</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <a href="{% url 'subject-list' %}" class="btn btn-outline-primary btn-sm mt-3">Manage Enrollments</a>
+            {% else %}
+                <p class="text-muted mb-2">You haven't enrolled in any subjects yet.</p>
+                <a href="{% url 'subject-list' %}" class="btn btn-primary btn-sm">Browse Subjects</a>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
