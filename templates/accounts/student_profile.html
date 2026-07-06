@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Edit Profile - SchoolMS{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-7">
+        <div class="card p-4">
+            <h4 class="fw-bold mb-4"><i class="bi bi-person-gear me-2"></i>Edit Profile</h4>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% if form.instance.profile_photo %}
+                    <div class="text-center mb-3">
+                        <img src="{{ form.instance.profile_photo.url }}" class="rounded-circle" width="80" height="80" style="object-fit:cover;">
+                    </div>
+                {% endif %}
+                {% for field in form %}
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}<div class="text-danger small">{{ field.errors }}</div>{% endif %}
+                </div>
+                {% endfor %}
+                <button type="submit" class="btn btn-primary w-100">Save Changes</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
