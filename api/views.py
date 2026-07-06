@@ -32,7 +32,7 @@ def subjects_delete(request, pk):
 
 
 # ── Auth ──────────────────────────────────────────
-@api_view(['POST'])
+'''@api_view(['POST'])
 @permission_classes([AllowAny])
 def login_view(request):
     username = request.data.get('username')
@@ -58,7 +58,7 @@ def register_view(request):
     if User.objects.filter(username=username).exists():
         return Response({"error": "Username already taken"}, status=400)
     User.objects.create_user(username=username, password=password, role='student')
-    return Response({"message": "User created successfully"}, status=201)
+    return Response({"message": "User created successfully"}, status=201)'''
 
 
 # ── Student Profile ───────────────────────────────
