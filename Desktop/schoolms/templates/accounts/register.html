@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% block title %}Register - SchoolMS{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card p-4">
+            <h3 class="fw-bold text-center mb-1"><i class="bi bi-person-plus-fill me-2"></i>Student Registration</h3>
+            <p class="text-center text-muted mb-4">Fill in your details to apply for admission</p>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">First Name *</label>
+                        <input type="text" name="first_name" class="form-control {% if form.first_name.errors %}is-invalid{% endif %}" value="{{ form.first_name.value|default:'' }}">
+                        {% for e in form.first_name.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Last Name *</label>
+                        <input type="text" name="last_name" class="form-control {% if form.last_name.errors %}is-invalid{% endif %}" value="{{ form.last_name.value|default:'' }}">
+                        {% for e in form.last_name.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Username *</label>
+                        <input type="text" name="username" class="form-control {% if form.username.errors %}is-invalid{% endif %}" value="{{ form.username.value|default:'' }}">
+                        {% for e in form.username.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Email *</label>
+                        <input type="email" name="email" class="form-control {% if form.email.errors %}is-invalid{% endif %}" value="{{ form.email.value|default:'' }}">
+                        {% for e in form.email.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Password *</label>
+                        <input type="password" name="password1" class="form-control {% if form.password1.errors %}is-invalid{% endif %}">
+                        {% for e in form.password1.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Confirm Password *</label>
+                        <input type="password" name="password2" class="form-control {% if form.password2.errors %}is-invalid{% endif %}">
+                        {% for e in form.password2.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Phone</label>
+                        <input type="text" name="phone" class="form-control" value="{{ form.phone.value|default:'' }}">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Date of Birth</label>
+                        <input type="date" name="date_of_birth" class="form-control" value="{{ form.date_of_birth.value|default:'' }}">
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label fw-semibold">Address</label>
+                        <textarea name="address" class="form-control" rows="2">{{ form.address.value|default:'' }}</textarea>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Guardian Name</label>
+                        <input type="text" name="guardian_name" class="form-control" value="{{ form.guardian_name.value|default:'' }}">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Guardian Phone</label>
+                        <input type="text" name="guardian_phone" class="form-control" value="{{ form.guardian_phone.value|default:'' }}">
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label fw-semibold">Profile Photo</label>
+                        <input type="file" name="profile_photo" class="form-control" accept="image/*">
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label fw-semibold">Profile Photo</label>
+                        <input type="file" name="profile_photo" class="form-control" accept="image/*">
+                    </div>
+
+                    <!-- ADD THIS BELOW -->
+                    <div class="col-12 mt-2">
+                        <hr>
+                        <h5 class="fw-bold text-primary">
+                            <i class="bi bi-file-earmark-pdf me-2"></i>Admission Documents
+                        </h5>
+                        <p class="text-muted small">Upload required documents in PDF format (optional)</p>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label fw-semibold">Birth Certificate</label>
+                        <input type="file" name="birth_certificate" class="form-control" accept=".pdf">
+                        <div class="form-text">PDF only</div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label fw-semibold">Previous Marksheet</label>
+                        <input type="file" name="previous_marksheet" class="form-control" accept=".pdf">
+                        <div class="form-text">PDF only</div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label fw-semibold">Address Proof</label>
+                        <input type="file" name="address_proof" class="form-control" accept=".pdf">
+                        <div class="form-text">PDF only</div>
+                    </div>
+                    <!-- ADD TILL HERE -->
+
+                </div>
+                <button type="submit" class="btn btn-primary w-100 mt-4">Submit Application</button>
+            </form>
+            <p class="text-center mt-3 mb-0">Already registered? <a href="{% url 'login' %}">Login here</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

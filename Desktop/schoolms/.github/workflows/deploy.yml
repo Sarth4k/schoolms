@@ -1,0 +1,24 @@
+name: Django CI/CD
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            sudo git config --global --add safe.directory /home/ubuntu/schoolms
+            cd /home/ubuntu/schoolms
+            sudo git fetch origin master
+            sudo git reset --hard origin/master
+            sudo /home/ubuntu/schoolms/venv/bin/pip install -r requirements.txt
+            sudo /home/ubuntu/schoolms/venv/bin/python manage.py migrate
+            sudo systemctl restart gunicorn
