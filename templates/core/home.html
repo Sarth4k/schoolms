@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% block title %}Home - SchoolMS{% endblock %}
+{% block content %}
+
+<div class="rounded-4 text-white p-5 mb-5 text-center" style="background: linear-gradient(135deg, #1a3c6e, #2d6a9f);">
+    <h1 class="display-4 fw-bold">Welcome to SchoolMS</h1>
+    <p class="lead">Quality education, brilliant future. Apply for admission today.</p>
+    {% if not user.is_authenticated %}
+        <a href="{% url 'register' %}" class="btn btn-accent btn-lg me-3 px-4">Apply for Admission</a>
+        <a href="{% url 'login' %}" class="btn btn-outline-light btn-lg px-4">Login</a>
+    {% else %}
+        {% if user.role == 'student' %}
+            <a href="{% url 'student-dashboard' %}" class="btn btn-accent btn-lg px-4">Go to Dashboard</a>
+        {% else %}
+            <a href="{% url 'teacher-dashboard' %}" class="btn btn-accent btn-lg px-4">Go to Dashboard</a>
+        {% endif %}
+    {% endif %}
+</div>
+
+<div class="row g-3 mb-5">
+    <div class="col-md-4">
+        <div class="card stat-card p-4 text-center">
+            <h2 class="fw-bold text-primary">{{ stats.students }}</h2>
+            <p class="text-muted mb-0"><i class="bi bi-people-fill me-1"></i>Students Enrolled</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card stat-card p-4 text-center">
+            <h2 class="fw-bold text-primary">{{ stats.teachers }}</h2>
+            <p class="text-muted mb-0"><i class="bi bi-person-workspace me-1"></i>Expert Teachers</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card stat-card p-4 text-center">
+            <h2 class="fw-bold text-primary">{{ stats.subjects }}</h2>
+            <p class="text-muted mb-0"><i class="bi bi-book-fill me-1"></i>Subjects Offered</p>
+        </div>
+    </div>
+</div>
+
+<h3 class="fw-bold mb-4"><i class="bi bi-book me-2"></i>Subjects Offered</h3>
+<div class="row g-3 mb-5">
+    {% for subject in subjects %}
+    <div class="col-md-6 col-lg-4">
+        <div class="card p-3 h-100">
+            <div class="d-flex align-items-center mb-2">
+                <span class="badge bg-primary me-2">{{ subject.code }}</span>
+                <h6 class="mb-0 fw-bold">{{ subject.name }}</h6>
+            </div>
+            {% if subject.description %}<p class="text-muted small mb-2">{{ subject.description }}</p>{% endif %}
+            <div class="mt-auto">
+                <p class="small text-muted mb-1"><i class="bi bi-person-fill me-1"></i>Teachers:</p>
+                {% for teacher in subject.teachers.all %}
+                <div class="d-flex align-items-center mb-1">
+                    {% if teacher.profile_photo %}
+                        <img src="{{ teacher.profile_photo.url }}" class="rounded-circle me-2" width="28" height="28" style="object-fit:cover;">
+                    {% else %}
+                        <div class="rounded-circle bg-secondary me-2 d-flex align-items-center justify-content-center" style="width:28px;height:28px;">
+                            <i class="bi bi-person-fill text-white" style="font-size:12px;"></i>
+                        </div>
+                    {% endif %}
+                    <span class="small">{{ teacher.user.get_full_name }}</span>
+                </div>
+                {% empty %}<span class="small text-muted">No teacher assigned yet</span>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% empty %}<p class="text-muted">No subjects available yet.</p>
+    {% endfor %}
+</div>
+
+<h3 class="fw-bold mb-4"><i class="bi bi-person-workspace me-2"></i>Our Teachers</h3>
+<div class="row g-3">
+    {% for teacher in teachers %}
+    <div class="col-md-4 col-lg-3">
+        <div class="card p-3 text-center h-100">
+            {% if teacher.profile_photo %}
+                <img src="{{ teacher.profile_photo.url }}" class="rounded-circle mx-auto mb-2" width="80" height="80" style="object-fit:cover;">
+            {% else %}
+                <div class="rounded-circle bg-secondary mx-auto mb-2 d-flex align-items-center justify-content-center" style="width:80px;height:80px;">
+                    <i class="bi bi-person-fill text-white fs-3"></i>
+                </div>
+            {% endif %}
+            <h6 class="fw-bold mb-0">{{ teacher.user.get_full_name }}</h6>
+            {% if teacher.qualification %}<p class="text-muted small mb-1">{{ teacher.qualification }}</p>{% endif %}
+            <div class="mt-1">
+                {% for subject in teacher.subjects.all %}
+                    <span class="badge bg-light text-dark border small">{{ subject.name }}</span>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% empty %}<p class="text-muted">No teachers added yet.</p>
+    {% endfor %}
+</div>
+{% endblock %}
