@@ -3,6 +3,16 @@ from django.contrib.auth.forms import UserCreationForm
 from .models import User, StudentProfile
 
 
+
+class EmailLoginForm(forms.Form):
+    email = forms.EmailField()
+
+    password = forms.CharField(
+        widget=forms.PasswordInput
+    )
+
+
+
 class StudentRegistrationForm(UserCreationForm):
     first_name = forms.CharField(max_length=100, required=True)
     last_name = forms.CharField(max_length=100, required=True)
@@ -21,6 +31,9 @@ class StudentRegistrationForm(UserCreationForm):
     birth_certificate = forms.FileField(required=True)
     previous_marksheet = forms.FileField(required=True)
     address_proof = forms.FileField(required=True)
+    def clean_username(self):
+        username = self.cleaned_data['username']
+        return username.lower()
 
     class Meta:
         model = User

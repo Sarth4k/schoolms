@@ -116,6 +116,12 @@ DATABASES = {
     }
 }'''
 
+#email auth
+AUTHENTICATION_BACKENDS = [
+    'accounts.authentication.EmailBackend',
+]
+
+
 # development
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 

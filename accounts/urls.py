@@ -22,6 +22,9 @@ urlpatterns = [
     path('student/profile/', StudentProfileUpdateView.as_view(), name='student-profile'),
     path('teacher/dashboard/', TeacherDashboardView.as_view(), name='teacher-dashboard'),
 
+
+    path('')
+
     path('password-reset/', PasswordResetView.as_view(
         template_name='accounts/password_reset.html',
         email_template_name='accounts/password_reset_email.html',
