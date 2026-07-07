@@ -2,6 +2,7 @@ from pathlib import Path
 import os
 from datetime import timedelta
 from dotenv import load_dotenv
+from datetime import timedelta
 load_dotenv()  # reads .env file automatically
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -22,8 +23,10 @@ REST_FRAMEWORK = {
 #JWT CONFIGURATION
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),  # 30 min mein expire
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),      # 7 din valid
+    'ROTATE_REFRESH_TOKENS': True,      # ← new refresh token milega
+    'BLACKLIST_AFTER_ROTATION': True,   # ← purana blacklist ho jayega
 }
 
 
