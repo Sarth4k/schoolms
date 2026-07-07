@@ -8,17 +8,37 @@ from .forms import StudentRegistrationForm, StudentProfileUpdateForm
 from .models import StudentProfile
 from subjects.models import Subject
 from admissions.models import AdmissionRequest
+from django.contrib.auth import authenticate, login
+from django.views.generic import FormView
 
+from .forms import EmailLoginForm
 
-class CustomLoginView(LoginView):
-    template_name = 'accounts/login.html'
+class CustomLoginView(FormView):
 
-    def get_success_url(self):
-        user = self.request.user
-        if user.is_teacher():
-            return reverse_lazy('teacher-dashboard')
-        return reverse_lazy('student-dashboard')
+    template_name = "accounts/login.html"
 
+    form_class = EmailLoginForm
+
+    def form_valid(self, form):
+
+        user = authenticate(
+            self.request,
+            email=form.cleaned_data["email"],
+            password=form.cleaned_data["password"],
+        )
+
+        if user:
+
+            login(self.request, user)
+
+            if user.is_teacher():
+                return redirect("teacher-dashboard")
+
+            return redirect("student-dashboard")
+
+        form.add_error(None, "Invalid email or password")
+
+        return self.form_invalid(form)
 
 class StudentRegisterView(CreateView):
     form_class = StudentRegistrationForm
