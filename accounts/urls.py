@@ -25,7 +25,7 @@ urlpatterns = [
     path('change-email/', views.change_email, name='change-email'),
     path('verify-email-change/<str:token>/', views.verify_email_change, name='verify-email-change'),
 
-    
+    #EMAIL PASS RESET 
     path('password-reset/', PasswordResetView.as_view(
         template_name='accounts/password_reset.html',
         email_template_name='accounts/password_reset_email.html',

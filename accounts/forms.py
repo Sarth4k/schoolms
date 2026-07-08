@@ -32,7 +32,7 @@ class ChangeEmailForm(forms.Form):
         return email
 
 
-
+#STUDENT REGISTRATION FORM
 class StudentRegistrationForm(UserCreationForm):
     first_name = forms.CharField(max_length=100, required=True)
     last_name = forms.CharField(max_length=100, required=True)
@@ -80,7 +80,7 @@ class StudentRegistrationForm(UserCreationForm):
             # PDFs AdmissionRequest mein jayenge — views.py mein handle hoga
         return user
 
-
+#STUDENT PROFILE PAGE UPDATE FORM
 class StudentProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = StudentProfile

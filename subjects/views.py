@@ -5,6 +5,7 @@ from django.contrib import messages
 from .models import Subject
 
 
+#LISSTING ALL SUBJECTS ON HOMEPAGE
 class SubjectListView(LoginRequiredMixin, ListView):
     model = Subject
     template_name = 'subjects/subject_list.html'
@@ -30,7 +31,7 @@ class SubjectListView(LoginRequiredMixin, ListView):
             )
         return ctx
 
-
+#LISTING ENROLLED SUBJECTS ON STUDENT DASHBOARD
 class EnrollView(LoginRequiredMixin, View):
     def post(self, request, subject_id):
         subject = get_object_or_404(Subject, id=subject_id)

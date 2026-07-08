@@ -4,6 +4,8 @@ from django.db.models import Q
 
 User = get_user_model()
 
+
+#LOGIN USING BOTH EMAIL AND USERNAME IN LOGIN PAGE
 class UsernameOrEmailBackend(ModelBackend):
     def authenticate(self, request, username=None, password=None, **kwargs):
         if username is None:

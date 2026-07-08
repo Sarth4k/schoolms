@@ -90,6 +90,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'school_mgmt.wsgi.application'
 
+
+#DATABASE
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -139,7 +141,7 @@ DEFAULT_FROM_EMAIL = os.environ.get('EMAIL_HOST_USER')
 
 
 
-# --- S3 Storage (uncomment and fill in production) ---
+# --- S3 Storage  ---
 
 AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')

@@ -19,6 +19,8 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 
 
+
+#change student email
 @login_required
 def change_email(request):
     if request.method == 'POST':
@@ -42,7 +44,7 @@ def change_email(request):
         form = ChangeEmailForm(request.user)
     return render(request, 'accounts/change_email.html', {'form': form})
 
-
+#verify email change
 def verify_email_change(request, token):
     signer = TimestampSigner()
     User = get_user_model()
@@ -60,6 +62,9 @@ def verify_email_change(request, token):
         messages.error(request, 'User not found.')
 
     return redirect('login')
+
+
+#LOGIN PAGE
 class CustomLoginView(FormView):
     template_name = "accounts/login.html"
     form_class = LoginForm
@@ -80,6 +85,8 @@ class CustomLoginView(FormView):
         form.add_error(None, "Invalid username/email or password")
         return self.form_invalid(form)
 
+
+#REGISTER PAGE
 class StudentRegisterView(CreateView):
     form_class = StudentRegistrationForm
     template_name = 'accounts/register.html'
@@ -102,7 +109,7 @@ class StudentRegisterView(CreateView):
             return redirect('student-dashboard')
         return super().dispatch(request, *args, **kwargs)
 
-
+#STUDENT DASHVBOARD VIEW
 class StudentDashboardView(LoginRequiredMixin, TemplateView):
     template_name = 'accounts/student_dashboard.html'
 
@@ -122,7 +129,7 @@ class StudentDashboardView(LoginRequiredMixin, TemplateView):
         ctx['enrolled_subjects'] = student.enrolled_subjects.all()
         return ctx
 
-
+#STUDENT PROFILE UPDATE PAGE
 class StudentProfileUpdateView(LoginRequiredMixin, UpdateView):
     model = StudentProfile
     form_class = StudentProfileUpdateForm
@@ -136,7 +143,7 @@ class StudentProfileUpdateView(LoginRequiredMixin, UpdateView):
         messages.success(self.request, 'Profile updated successfully!')
         return super().form_valid(form)
 
-
+#TEACHER DASHBOARD VIEW
 class TeacherDashboardView(LoginRequiredMixin, TemplateView):
     template_name = 'accounts/teacher_dashboard.html'
 
