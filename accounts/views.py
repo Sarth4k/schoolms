@@ -11,33 +11,29 @@ from admissions.models import AdmissionRequest
 from django.contrib.auth import authenticate, login
 from django.views.generic import FormView
 
-from .forms import EmailLoginForm
+from .forms import LoginForm
+
+
+
 
 class CustomLoginView(FormView):
-
     template_name = "accounts/login.html"
-
-    form_class = EmailLoginForm
+    form_class = LoginForm
 
     def form_valid(self, form):
-
         user = authenticate(
             self.request,
-            email=form.cleaned_data["email"],
+            username=form.cleaned_data["username_or_email"],
             password=form.cleaned_data["password"],
         )
 
         if user:
-
             login(self.request, user)
-
             if user.is_teacher():
                 return redirect("teacher-dashboard")
-
             return redirect("student-dashboard")
 
-        form.add_error(None, "Invalid email or password")
-
+        form.add_error(None, "Invalid username/email or password")
         return self.form_invalid(form)
 
 class StudentRegisterView(CreateView):
