@@ -35,9 +35,11 @@ SIMPLE_JWT = {
     'BLACKLIST_AFTER_ROTATION': True,   # ← purana blacklist ho jayega
 }
 
+SITE_ID = 1
 
 INSTALLED_APPS = [
     'django.contrib.admin',
+    'django.contrib.sites',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
