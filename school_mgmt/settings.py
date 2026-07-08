@@ -92,6 +92,9 @@ WSGI_APPLICATION = 'school_mgmt.wsgi.application'
 
 
 CSRF_TRUSTED_ORIGINS = ['http://35.154.5.116:8080']
+SESSION_COOKIE_AGE = 86400  # 1 din
+CSRF_COOKIE_SECURE = False  # HTTP pe
+SESSION_COOKIE_SECURE = False  # HTTP pe
 
 
 #DATABASE
