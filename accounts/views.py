@@ -16,6 +16,7 @@ from django.core.signing import TimestampSigner, BadSignature
 from django.core.mail import send_mail
 from django.contrib import messages
 from django.conf import settings
+from django.contrib.auth import get_user_model
 
 
 @login_required
@@ -42,25 +43,23 @@ def change_email(request):
     return render(request, 'accounts/change_email.html', {'form': form})
 
 
-@login_required
 def verify_email_change(request, token):
     signer = TimestampSigner()
+    User = get_user_model()
     try:
-        value = signer.unsign(token, max_age=86400)  # 24 hours valid
+        value = signer.unsign(token, max_age=86400)
         user_pk, new_email = value.split(':', 1)
 
-        if str(request.user.pk) != user_pk:
-            messages.error(request, 'Invalid verification link.')
-            return redirect('change-email')
-
-        request.user.email = new_email
-        request.user.save()
-        messages.success(request, 'Email updated successfully!')
+        user = User.objects.get(pk=user_pk)
+        user.email = new_email
+        user.save()
+        messages.success(request, 'Email updated successfully! You can now login.')
     except BadSignature:
         messages.error(request, 'Invalid or expired link.')
+    except User.DoesNotExist:
+        messages.error(request, 'User not found.')
 
-    return redirect('student-profile')
-
+    return redirect('login')
 class CustomLoginView(FormView):
     template_name = "accounts/login.html"
     form_class = LoginForm
