@@ -9,6 +9,29 @@ class LoginForm(forms.Form):
     password = forms.CharField(widget=forms.PasswordInput)
 
 
+#if the user wants to change their email
+class ChangeEmailForm(forms.Form):
+    new_email = forms.EmailField(label="New Email")
+    current_password = forms.CharField(widget=forms.PasswordInput, label="Current Password")
+
+    def __init__(self, user, *args, **kwargs):
+        self.user = user
+        super().__init__(*args, **kwargs)
+
+    def clean_current_password(self):
+        password = self.cleaned_data['current_password']
+        if not self.user.check_password(password):
+            raise forms.ValidationError("Incorrect password")
+        return password
+
+    def clean_new_email(self):
+        email = self.cleaned_data['new_email']
+        User = self.user.__class__
+        if User.objects.filter(email__iexact=email).exclude(pk=self.user.pk).exists():
+            raise forms.ValidationError("This email is already in use")
+        return email
+
+
 
 class StudentRegistrationForm(UserCreationForm):
     first_name = forms.CharField(max_length=100, required=True)

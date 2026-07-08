@@ -1,4 +1,4 @@
-from django.shortcuts import redirect
+from django.shortcuts import render, redirect
 from django.views.generic import CreateView, TemplateView, UpdateView
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -10,11 +10,56 @@ from subjects.models import Subject
 from admissions.models import AdmissionRequest
 from django.contrib.auth import authenticate, login
 from django.views.generic import FormView
+from .forms import LoginForm, ChangeEmailForm
+from django.contrib.auth.decorators import login_required
+from django.core.signing import TimestampSigner, BadSignature
+from django.core.mail import send_mail
+from django.contrib import messages
+from django.conf import settings
 
-from .forms import LoginForm
+
+@login_required
+def change_email(request):
+    if request.method == 'POST':
+        form = ChangeEmailForm(request.user, request.POST)
+        if form.is_valid():
+            new_email = form.cleaned_data['new_email']
+            signer = TimestampSigner()
+            token = signer.sign(f"{request.user.pk}:{new_email}")
+
+            verify_link = request.build_absolute_uri(f'/accounts/verify-email-change/{token}/')
+
+            send_mail(
+                subject='Confirm your new email - SchoolMS',
+                message=f'Click to confirm your new email:\n\n{verify_link}',
+                from_email=None,
+                recipient_list=[new_email],
+            )
+            messages.success(request, 'Verification link sent to your new email!')
+            return redirect('change-email')
+    else:
+        form = ChangeEmailForm(request.user)
+    return render(request, 'accounts/change_email.html', {'form': form})
 
 
+@login_required
+def verify_email_change(request, token):
+    signer = TimestampSigner()
+    try:
+        value = signer.unsign(token, max_age=86400)  # 24 hours valid
+        user_pk, new_email = value.split(':', 1)
 
+        if str(request.user.pk) != user_pk:
+            messages.error(request, 'Invalid verification link.')
+            return redirect('change-email')
+
+        request.user.email = new_email
+        request.user.save()
+        messages.success(request, 'Email updated successfully!')
+    except BadSignature:
+        messages.error(request, 'Invalid or expired link.')
+
+    return redirect('student-profile')
 
 class CustomLoginView(FormView):
     template_name = "accounts/login.html"
