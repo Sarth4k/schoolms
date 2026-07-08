@@ -31,13 +31,23 @@
                     </div>
                     <div class="col-md-6">
                         <label class="form-label fw-semibold">Password *</label>
-                        <input type="password" name="password1" class="form-control {% if form.password1.errors %}is-invalid{% endif %}">
-                        {% for e in form.password1.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+                        <div class="input-group">
+                        <input type="password" id="id_password1" name="password1" class="form-control {% if form.password1.errors %}is-invalid{% endif %}">
+                    <span class="input-group-text" style="cursor:pointer;" onclick="togglePwd('id_password1', this)">
+                    <i class="bi bi-eye"></i>
+                        </span>
+                        </div>
+                        {% for e in form.password1.errors %}<div class="invalid-feedback d-block">{{ e }}</div>{% endfor %}
                     </div>
                     <div class="col-md-6">
                         <label class="form-label fw-semibold">Confirm Password *</label>
-                        <input type="password" name="password2" class="form-control {% if form.password2.errors %}is-invalid{% endif %}">
-                        {% for e in form.password2.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+                        <div class="input-group">
+                        <input type="password" id="id_password2" name="password2" class="form-control {% if form.password2.errors %}is-invalid{% endif %}">
+                    <span class="input-group-text" style="cursor:pointer;" onclick="togglePwd('id_password2', this)">
+                    <i class="bi bi-eye"></i>
+                        </span>
+                        </div>
+                        {% for e in form.password2.errors %}<div class="invalid-feedback d-block">{{ e }}</div>{% endfor %}
                     </div>
                     <div class="col-md-6">
                         <label class="form-label fw-semibold">Phone</label>
@@ -100,4 +110,17 @@
         </div>
     </div>
 </div>
+<script>
+function togglePwd(id, iconSpan) {
+    const input = document.getElementById(id);
+    const icon = iconSpan.querySelector('i');
+    if (input.type === 'password') {
+        input.type = 'text';
+        icon.classList.replace('bi-eye', 'bi-eye-slash');
+    } else {
+        input.type = 'password';
+        icon.classList.replace('bi-eye-slash', 'bi-eye');
+    }
+}
+</script>
 {% endblock %}

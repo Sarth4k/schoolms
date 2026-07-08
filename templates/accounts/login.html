@@ -10,12 +10,22 @@
                 {% for field in form %}
                 <div class="mb-3">
                     <label class="form-label fw-semibold">{{ field.label }}</label>
-                    <input type="{{ field.field.widget.input_type }}" name="{{ field.html_name }}"
-                        class="form-control {% if field.errors %}is-invalid{% endif %}"
-                        {% if field.value %}value="{{ field.value }}"{% endif %}>
-                    {% for error in field.errors %}<div class="invalid-feedback">{{ error }}</div>{% endfor %}
-                </div>
-                {% endfor %}
+                    {% if field.field.widget.input_type == 'password' %}
+                        <div class="input-group">
+                        <input type="password" id="id_{{ field.html_name }}" name="{{ field.html_name }}"
+                    class="form-control {% if field.errors %}is-invalid{% endif %}">
+                <span class="input-group-text" style="cursor:pointer;" onclick="togglePwd('id_{{ field.html_name }}', this)">
+                <i class="bi bi-eye"></i>
+                </span>
+            </div>
+        {% else %}
+            <input type="{{ field.field.widget.input_type }}" name="{{ field.html_name }}"
+                class="form-control {% if field.errors %}is-invalid{% endif %}"
+                {% if field.value %}value="{{ field.value }}"{% endif %}>
+        {% endif %}
+        {% for error in field.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+    </div>
+    {% endfor %}
                 <button type="submit" class="btn btn-primary w-100 mt-2">Login</button>
             </form>
             <p class="text-center mt-3 mb-0">New student? <a href="{% url 'register' %}">Apply for Admission</a></p>
@@ -25,4 +35,17 @@
 <p class="text-center mt-3 mb-0">
     <a href="{% url 'password-reset' %}">Forgot Password?</a>
 </p>
+<script>
+function togglePwd(id, iconSpan) {
+    const input = document.getElementById(id);
+    const icon = iconSpan.querySelector('i');
+    if (input.type === 'password') {
+        input.type = 'text';
+        icon.classList.replace('bi-eye', 'bi-eye-slash');
+    } else {
+        input.type = 'password';
+        icon.classList.replace('bi-eye-slash', 'bi-eye');
+    }
+}
+</script>
 {% endblock %}
