@@ -91,6 +91,9 @@ TEMPLATES = [
 WSGI_APPLICATION = 'school_mgmt.wsgi.application'
 
 
+CSRF_TRUSTED_ORIGINS = ['http://35.154.5.116:8080']
+
+
 #DATABASE
 '''DATABASES = {
     'default': {
