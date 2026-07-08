@@ -8,6 +8,15 @@
             <p class="text-center text-muted mb-4">Fill in your details to apply for admission</p>
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
+                {% if form.non_field_errors %}
+                <div class="alert alert-danger">
+                    {% for error in form.non_field_errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+                {% endif %}
+                <div class="row g-3">
+                    ...
                 <div class="row g-3">
                     <div class="col-md-6">
                         <label class="form-label fw-semibold">First Name *</label>
