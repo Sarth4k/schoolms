@@ -14,7 +14,8 @@
             <div class="col-md-4">
                 <label class="form-label fw-semibold">Select Date</label>
                 <input type="date" name="date" class="form-control"
-                    value="{{ date }}" max="{{ date }}">
+                    value="{% now 'Y-m-d' %}"
+                    max="{% now 'Y-m-d' %}">
             </div>
             <div class="col-md-2">
                 <button type="submit" class="btn btn-primary w-100">Save Attendance</button>

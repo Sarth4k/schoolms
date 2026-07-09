@@ -45,9 +45,9 @@ class EnrollView(LoginRequiredMixin, View):
             messages.success(request, f'Enrolled in {subject.name} successfully!')
         return redirect('subject-list')
     
-
 class TeacherAttendanceView(LoginRequiredMixin, TemplateView):
     template_name = 'subjects/attendance.html'
+    login_url = '/accounts/login/'
 
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_teacher():
@@ -57,10 +57,9 @@ class TeacherAttendanceView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
         subject = get_object_or_404(Subject, id=self.kwargs['subject_id'])
-        date = self.request.GET.get('date', timezone.now().date())
+        date = self.request.GET.get('date') or str(timezone.now().date())  # ← self.request
         students = subject.students.all()
 
-        # existing attendance for that date
         existing = {
             a.student_id: a.status
             for a in Attendance.objects.filter(subject=subject, date=date)
