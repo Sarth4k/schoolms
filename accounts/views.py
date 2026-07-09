@@ -86,7 +86,7 @@ class CustomLoginView(FormView):
         return self.form_invalid(form)
 
 
-#REGISTER PAGE
+#REGISTER PAGEeee
 class StudentRegisterView(CreateView):
     form_class = StudentRegistrationForm
     template_name = 'accounts/register.html'

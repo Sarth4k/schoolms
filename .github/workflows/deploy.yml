@@ -24,3 +24,4 @@ jobs:
             sudo systemctl restart schoolms
             sudo systemctl restart nginx
             echo "✅ Deployed!"
+            
