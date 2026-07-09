@@ -37,6 +37,7 @@
                 {% if user.is_authenticated %}
                     {% if user.role == 'student' %}
                         <li class="nav-item"><a class="nav-link" href="{% url 'student-dashboard' %}">Dashboard</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'student-attendance' %}">Attendance</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'subject-list' %}">Subjects</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'student-profile' %}">Profile</a></li>
                     {% else %}

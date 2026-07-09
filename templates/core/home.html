@@ -17,26 +17,6 @@
     {% endif %}
 </div>
 
-<div class="row g-3 mb-5">
-    <div class="col-md-4">
-        <div class="card stat-card p-4 text-center">
-            <h2 class="fw-bold" style="color:#d14918;">{{ stats.students }}</h2>
-            <p class="text-muted mb-0"><i class="bi bi-people-fill me-1"></i>Students Enrolled</p>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="card stat-card p-4 text-center">
-            <h2 class="fw-bold" style="color:#d14918;">{{ stats.teachers }}</h2>
-            <p class="text-muted mb-0"><i class="bi bi-person-workspace me-1"></i>Expert Teachers</p>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="card stat-card p-4 text-center">
-            <h2 class="fw-bold" style="color:#d14918;">{{ stats.subjects }}</h2>
-            <p class="text-muted mb-0"><i class="bi bi-book-fill me-1"></i>Subjects Offered</p>
-        </div>
-    </div>
-</div>
 <!-- Banner Slider -->
 {% if banner_images %}
 <div id="schoolBanner" class="carousel slide rounded-4 mb-4" data-bs-ride="carousel">
@@ -98,6 +78,28 @@
     {% endfor %}
 </div>
 {% endif %}
+
+
+<div class="row g-3 mb-5">
+    <div class="col-md-4">
+        <div class="card stat-card p-4 text-center">
+            <h2 class="fw-bold" style="color:#d14918;">{{ stats.students }}</h2>
+            <p class="text-muted mb-0"><i class="bi bi-people-fill me-1"></i>Students Enrolled</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card stat-card p-4 text-center">
+            <h2 class="fw-bold" style="color:#d14918;">{{ stats.teachers }}</h2>
+            <p class="text-muted mb-0"><i class="bi bi-person-workspace me-1"></i>Expert Teachers</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card stat-card p-4 text-center">
+            <h2 class="fw-bold" style="color:#d14918;">{{ stats.subjects }}</h2>
+            <p class="text-muted mb-0"><i class="bi bi-book-fill me-1"></i>Subjects Offered</p>
+        </div>
+    </div>
+</div>
 <h3 class="fw-bold mb-4"><i class="bi bi-book me-2"></i>Subjects Offered</h3>
 <div class="row g-3 mb-5">
     {% for subject in subjects %}

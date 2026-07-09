@@ -1,9 +1,10 @@
-from django.shortcuts import redirect, get_object_or_404
-from django.views.generic import ListView, View
+from django.views.generic import ListView, View, TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import redirect, get_object_or_404
 from django.contrib import messages
-from .models import Subject
-
+from django.utils import timezone
+from .models import Subject, Attendance
+from accounts.models import TeacherProfile, StudentProfile
 
 #LISSTING ALL SUBJECTS ON HOMEPAGE
 class SubjectListView(LoginRequiredMixin, ListView):
@@ -43,3 +44,85 @@ class EnrollView(LoginRequiredMixin, View):
             student.enrolled_subjects.add(subject)
             messages.success(request, f'Enrolled in {subject.name} successfully!')
         return redirect('subject-list')
+    
+
+class TeacherAttendanceView(LoginRequiredMixin, TemplateView):
+    template_name = 'subjects/attendance.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_teacher():
+            return redirect('student-dashboard')
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        subject = get_object_or_404(Subject, id=self.kwargs['subject_id'])
+        date = self.request.GET.get('date', timezone.now().date())
+        students = subject.students.all()
+
+        # existing attendance for that date
+        existing = {
+            a.student_id: a.status
+            for a in Attendance.objects.filter(subject=subject, date=date)
+        }
+
+        ctx['subject'] = subject
+        ctx['students'] = students
+        ctx['date'] = date
+        ctx['existing'] = existing
+        return ctx
+
+    def post(self, request, subject_id):
+        subject = get_object_or_404(Subject, id=subject_id)
+        date = request.POST.get('date')
+        teacher = request.user.teacherprofile
+
+        for student in subject.students.all():
+            status = request.POST.get(f'status_{student.id}', 'absent')
+            Attendance.objects.update_or_create(
+                subject=subject,
+                student=student,
+                date=date,
+                defaults={
+                    'status': status,
+                    'marked_by': teacher,
+                }
+            )
+        messages.success(request, f'Attendance saved for {date}!')
+        return redirect(f'/subjects/attendance/{subject_id}/?date={date}')
+
+
+class StudentAttendanceView(LoginRequiredMixin, TemplateView):
+    template_name = 'subjects/student_attendance.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_student():
+            return redirect('teacher-dashboard')
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        student = self.request.user.studentprofile
+        enrolled_subjects = student.enrolled_subjects.all()
+
+        attendance_data = []
+        for subject in enrolled_subjects:
+            records = Attendance.objects.filter(
+                subject=subject,
+                student=student
+            ).order_by('-date')
+
+            total = records.count()
+            present = records.filter(status='present').count()
+            percentage = round((present / total * 100), 1) if total > 0 else 0
+
+            attendance_data.append({
+                'subject': subject,
+                'records': records[:10],  # last 10 records
+                'total': total,
+                'present': present,
+                'percentage': percentage,
+            })
+
+        ctx['attendance_data'] = attendance_data
+        return ctx

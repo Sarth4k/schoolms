@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% block title %}My Attendance{% endblock %}
+{% block content %}
+
+<h4 class="fw-bold mb-4">My Attendance</h4>
+
+{% for data in attendance_data %}
+<div class="card p-4 mb-3">
+    <div class="d-flex align-items-center justify-content-between mb-3">
+        <div>
+            <span class="badge me-2" style="background:#e8f0eb;color:#4a7c59;">{{ data.subject.code }}</span>
+            <span class="fw-bold">{{ data.subject.name }}</span>
+        </div>
+        <div class="text-end">
+            <span class="fw-bold" style="color:{% if data.percentage >= 75 %}#4a7c59{% else %}#dc3545{% endif %};">
+                {{ data.percentage }}%
+            </span>
+            <small class="text-muted ms-1">{{ data.present }}/{{ data.total }} classes</small>
+        </div>
+    </div>
+
+    <!-- Progress bar -->
+    <div class="progress mb-3" style="height:6px;">
+        <div class="progress-bar" style="width:{{ data.percentage }}%;
+            background:{% if data.percentage >= 75 %}#4a7c59{% else %}#dc3545{% endif %};">
+        </div>
+    </div>
+
+    <!-- Recent records -->
+    {% if data.records %}
+    <div class="table-responsive">
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in data.records %}
+                <tr>
+                    <td>{{ record.date }}</td>
+                    <td>
+                        {% if record.status == 'present' %}
+                            <span class="badge" style="background:#e8f0eb;color:#4a7c59;">Present</span>
+                        {% elif record.status == 'absent' %}
+                            <span class="badge bg-danger">Absent</span>
+                        {% else %}
+                            <span class="badge bg-warning text-dark">Late</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+        <p class="text-muted small mb-0">No attendance records yet.</p>
+    {% endif %}
+</div>
+{% empty %}
+    <p class="text-muted">You are not enrolled in any subjects yet.</p>
+{% endfor %}
+
+{% endblock %}

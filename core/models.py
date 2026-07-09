@@ -18,3 +18,4 @@ class SchoolImage(models.Model):
 
     def __str__(self):
         return f"{self.image_type} - {self.title}"
+

@@ -12,3 +12,23 @@ class Subject(models.Model):
 
     def __str__(self):
         return f"{self.code} - {self.name}"
+
+
+class Attendance(models.Model):
+    STATUS_CHOICES = (
+        ('present', 'Present'),
+        ('absent', 'Absent'),
+        ('late', 'Late'),
+    )
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name='attendances')
+    student = models.ForeignKey(StudentProfile, on_delete=models.CASCADE, related_name='attendances')
+    date = models.DateField()
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='absent')
+    marked_by = models.ForeignKey(TeacherProfile, on_delete=models.SET_NULL, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ['subject', 'student', 'date']
+
+    def __str__(self):
+        return f"{self.student} - {self.subject} - {self.date} - {self.status}"
