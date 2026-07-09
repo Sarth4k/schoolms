@@ -15,13 +15,11 @@ jobs:
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
+            sudo git config --global --add safe.directory /home/ubuntu/schoolms
             cd /home/ubuntu/schoolms
-            git fetch origin
-            git reset --hard origin/master
-            pip install -r requirements.txt --break-system-packages
-            python3 manage.py migrate --noinput
-            python3 manage.py collectstatic --noinput
-            sudo systemctl restart schoolms
-            sudo systemctl restart nginx
-            echo "✅ Deployed!"
+            sudo git fetch origin master
+            sudo git reset --hard origin/master
+            sudo /home/ubuntu/schoolms/venv/bin/pip install -r requirements.txt
+            sudo /home/ubuntu/schoolms/venv/bin/python manage.py migrate
+            sudo systemctl restart gunicorn
             
