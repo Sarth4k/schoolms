@@ -31,6 +31,33 @@ class SubjectListView(LoginRequiredMixin, ListView):
                 self.request.user.studentprofile.enrolled_subjects.values_list('id', flat=True)
             )
         return ctx
+    
+class SubjectDetailView(LoginRequiredMixin, TemplateView):
+    template_name = 'subjects/subject_detail.html'
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        subject = get_object_or_404(Subject, id=self.kwargs['subject_id'])
+        ctx['subject'] = subject
+        ctx['teachers'] = subject.teachers.all()
+
+        if self.request.user.is_student():
+            student = self.request.user.studentprofile
+            records = Attendance.objects.filter(
+                subject=subject,
+                student=student
+            ).order_by('-date')
+
+            total = records.count()
+            present = records.filter(status='present').count()
+            percentage = round((present / total * 100), 1) if total > 0 else 0
+
+            ctx['attendance_records'] = records
+            ctx['total'] = total
+            ctx['present'] = present
+            ctx['percentage'] = percentage
+
+        return ctx    
 
 #LISTING ENROLLED SUBJECTS ON STUDENT DASHBOARD
 class EnrollView(LoginRequiredMixin, View):
@@ -106,22 +133,47 @@ class StudentAttendanceView(LoginRequiredMixin, TemplateView):
 
         attendance_data = []
         for subject in enrolled_subjects:
-            records = Attendance.objects.filter(
-                subject=subject,
-                student=student
-            ).order_by('-date')
-
+            records = Attendance.objects.filter(subject=subject, student=student)
             total = records.count()
             present = records.filter(status='present').count()
             percentage = round((present / total * 100), 1) if total > 0 else 0
 
             attendance_data.append({
                 'subject': subject,
-                'records': records[:10],  # last 10 records
                 'total': total,
                 'present': present,
                 'percentage': percentage,
             })
 
         ctx['attendance_data'] = attendance_data
+        return ctx
+
+
+class StudentAttendanceDetailView(LoginRequiredMixin, TemplateView):
+    template_name = 'subjects/student_attendance_detail.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_student():
+            return redirect('teacher-dashboard')
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        subject = get_object_or_404(Subject, id=self.kwargs['subject_id'])
+        student = self.request.user.studentprofile
+
+        records = Attendance.objects.filter(
+            subject=subject,
+            student=student
+        ).order_by('-date')
+
+        total = records.count()
+        present = records.filter(status='present').count()
+        percentage = round((present / total * 100), 1) if total > 0 else 0
+
+        ctx['subject'] = subject
+        ctx['records'] = records
+        ctx['total'] = total
+        ctx['present'] = present
+        ctx['percentage'] = percentage
         return ctx

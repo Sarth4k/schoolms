@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% block title %}{{ subject.name }} Attendance{% endblock %}
+{% block content %}
+
+<div class="d-flex align-items-center mb-4">
+    <a href="{% url 'student-attendance' %}" class="btn btn-outline-secondary btn-sm me-3">
+        <i class="bi bi-arrow-left"></i>
+    </a>
+    <h4 class="fw-bold mb-0">{{ subject.name }} — Attendance</h4>
+</div>
+
+<!-- Summary -->
+<div class="card p-4 mb-4">
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <span class="text-muted">{{ present }}/{{ total }} classes attended</span>
+        <span class="fw-bold fs-4" style="color:{% if percentage >= 75 %}#4a7c59{% else %}#dc3545{% endif %};">
+            {{ percentage }}%
+        </span>
+    </div>
+    <div class="progress" style="height:10px;">
+        <div class="progress-bar" style="width:{{ percentage }}%;background:{% if percentage >= 75 %}#4a7c59{% else %}#dc3545{% endif %};"></div>
+    </div>
+    {% if percentage < 75 %}
+    <div class="alert alert-danger py-2 mt-3 mb-0 small">
+        <i class="bi bi-exclamation-triangle me-1"></i>
+        Your attendance is below 75%! Please attend more classes.
+    </div>
+    {% endif %}
+</div>
+
+<!-- Detailed Records -->
+<div class="card p-4">
+    <h6 class="fw-bold mb-3">Attendance Records</h6>
+    {% if records %}
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in records %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ record.date }}</td>
+                    <td>
+                        {% if record.status == 'present' %}
+                            <span class="badge" style="background:#e8f0eb;color:#4a7c59;">
+                                <i class="bi bi-check-circle me-1"></i>Present
+                            </span>
+                        {% elif record.status == 'absent' %}
+                            <span class="badge bg-danger">
+                                <i class="bi bi-x-circle me-1"></i>Absent
+                            </span>
+                        {% else %}
+                            <span class="badge bg-warning text-dark">Late</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+        <p class="text-muted">No attendance records yet.</p>
+    {% endif %}
+</div>
+
+{% endblock %}
