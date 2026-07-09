@@ -94,6 +94,7 @@ class StudentRegisterView(CreateView):
 
     def form_valid(self, form):
         response = super().form_valid(form)
+        
     # PDFs yahan AdmissionRequest mein save honge
         AdmissionRequest.objects.create(
             student=self.object.studentprofile,
@@ -121,7 +122,6 @@ class StudentDashboardView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
         
-        # safely fetch karo — crash nahi hoga
         student, created = StudentProfile.objects.get_or_create(user=self.request.user)
         
         ctx['student'] = student

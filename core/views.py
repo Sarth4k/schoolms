@@ -1,6 +1,7 @@
 from django.views.generic import TemplateView
 from subjects.models import Subject
 from accounts.models import TeacherProfile, StudentProfile
+from .models import SchoolImage
 
 
 class HomeView(TemplateView):
@@ -15,4 +16,8 @@ class HomeView(TemplateView):
             'teachers': TeacherProfile.objects.count(),
             'subjects': Subject.objects.count(),
         }
+
+        ctx['banner_images'] = SchoolImage.objects.filter(image_type='banner', is_active=True)
+        ctx['gallery_images'] = SchoolImage.objects.filter(image_type='gallery', is_active=True)
+        ctx['facility_images'] = SchoolImage.objects.filter(image_type='facility', is_active=True)
         return ctx

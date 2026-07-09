@@ -2,7 +2,7 @@
 {% block title %}Home - SchoolMS{% endblock %}
 {% block content %}
 
-<div class="rounded-4 text-white p-5 mb-5 text-center" style="background: linear-gradient(135deg, #1a3c6e, #2d6a9f);">
+<div class="rounded-4 text-white p-5 mb-5 text-center" style="background: linear-gradient(135deg, #ae3b0a, #ce3c0b);">
     <h1 class="display-4 fw-bold">Welcome to SchoolMS</h1>
     <p class="lead">Quality education, brilliant future. Apply for admission today.</p>
     {% if not user.is_authenticated %}
@@ -20,24 +20,84 @@
 <div class="row g-3 mb-5">
     <div class="col-md-4">
         <div class="card stat-card p-4 text-center">
-            <h2 class="fw-bold text-primary">{{ stats.students }}</h2>
+            <h2 class="fw-bold" style="color:#d14918;">{{ stats.students }}</h2>
             <p class="text-muted mb-0"><i class="bi bi-people-fill me-1"></i>Students Enrolled</p>
         </div>
     </div>
     <div class="col-md-4">
         <div class="card stat-card p-4 text-center">
-            <h2 class="fw-bold text-primary">{{ stats.teachers }}</h2>
+            <h2 class="fw-bold" style="color:#d14918;">{{ stats.teachers }}</h2>
             <p class="text-muted mb-0"><i class="bi bi-person-workspace me-1"></i>Expert Teachers</p>
         </div>
     </div>
     <div class="col-md-4">
         <div class="card stat-card p-4 text-center">
-            <h2 class="fw-bold text-primary">{{ stats.subjects }}</h2>
+            <h2 class="fw-bold" style="color:#d14918;">{{ stats.subjects }}</h2>
             <p class="text-muted mb-0"><i class="bi bi-book-fill me-1"></i>Subjects Offered</p>
         </div>
     </div>
 </div>
+<!-- Banner Slider -->
+{% if banner_images %}
+<div id="schoolBanner" class="carousel slide rounded-4 mb-4" data-bs-ride="carousel">
+    <div class="carousel-inner rounded-4">
+        {% for img in banner_images %}
+        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+            <img src="{{ img.image.url }}" class="d-block w-100 rounded-4"
+                style="height:400px;object-fit:cover;" alt="{{ img.title }}">
+            <div class="carousel-caption">
+                <h5 class="fw-bold">{{ img.title }}</h5>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#schoolBanner" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#schoolBanner" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+    </button>
+</div>
+{% endif %}
 
+<!-- Gallery Section -->
+{% if gallery_images %}
+<div class="d-flex align-items-center mb-3">
+    <span class="fw-semibold" style="color:#4a4a47;white-space:nowrap;">School Gallery</span>
+    <div class="ms-3" style="height:0.5px;background:#dedad4;flex:1;"></div>
+</div>
+<div class="row g-3 mb-5">
+    {% for img in gallery_images %}
+    <div class="col-md-4 col-lg-3">
+        <div class="rounded-3 overflow-hidden" style="height:200px;">
+            <img src="{{ img.image.url }}" class="w-100 h-100"
+                style="object-fit:cover;" alt="{{ img.title }}">
+        </div>
+        <p class="small text-muted mt-1 mb-0">{{ img.title }}</p>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<!-- Facilities Section -->
+{% if facility_images %}
+<div class="d-flex align-items-center mb-3">
+    <span class="fw-semibold" style="color:#4a4a47;white-space:nowrap;">Our Facilities</span>
+    <div class="ms-3" style="height:0.5px;background:#dedad4;flex:1;"></div>
+</div>
+<div class="row g-3 mb-5">
+    {% for img in facility_images %}
+    <div class="col-md-6 col-lg-4">
+        <div class="card p-0 overflow-hidden h-100" style="border:0.5px solid #e8e5df;">
+            <img src="{{ img.image.url }}" style="height:180px;object-fit:cover;width:100%;" alt="{{ img.title }}">
+            <div class="p-2">
+                <p class="fw-semibold mb-0 small">{{ img.title }}</p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
 <h3 class="fw-bold mb-4"><i class="bi bi-book me-2"></i>Subjects Offered</h3>
 <div class="row g-3 mb-5">
     {% for subject in subjects %}
