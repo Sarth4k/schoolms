@@ -51,6 +51,10 @@ class StudentRegistrationForm(UserCreationForm):
     birth_certificate = forms.FileField(required=True)
     previous_marksheet = forms.FileField(required=True)
     address_proof = forms.FileField(required=True)
+
+
+
+    # CASE SENSITIVE USERNAME
     def clean_username(self):
         username = self.cleaned_data['username']
         return username.lower()
