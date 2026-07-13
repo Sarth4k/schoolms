@@ -31,8 +31,8 @@ CSRF_TRUSTED_ORIGINS = [
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),  # 30 min mein expire
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),      # 7 din valid
-    'ROTATE_REFRESH_TOKENS': True,      # ← new refresh token milega
-    'BLACKLIST_AFTER_ROTATION': True,   # ← purana blacklist ho jayega
+    'ROTATE_REFRESH_TOKENS': True,
+    'BLACKLIST_AFTER_ROTATION': True,
 }
 
 SITE_ID = 1
@@ -172,7 +172,12 @@ MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'
 #MEDIA_ROOT = BASE_DIR / 'media'
 
 STATIC_URL = '/static/'
+
+# Development — apne static files yahan rakho
 STATICFILES_DIRS = [BASE_DIR / 'static']
+
+# Production — collectstatic yahan sab collect karega
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
