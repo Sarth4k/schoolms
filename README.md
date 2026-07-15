@@ -49,7 +49,6 @@ A full-featured school management system built with Django, deployed on AWS with
 - Enroll in subjects
 - View attendance per subject
 - Password reset via email
-- Dark mode support
 
 ### Teacher
 - Login and view dashboard
@@ -93,7 +92,12 @@ schoolms/
 ├── .github/
 │   └── workflows/
 │       └── deploy.yml # GitHub Actions CI/CD
-└── requirements.txt
+├──  requirements.txt
+├── .dockerignore
+├── .env
+├── docker-compose.yml
+├── Dockerfile
+└── manage.py
 ```
 
 ---
