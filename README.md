@@ -247,5 +247,5 @@ Body: { "refresh": "token" }
 
 **Sarthak** — [@Sarth4k](https://github.com/Sarth4k)
 
-- 📧 sarthaks1108@gmail.com
+- 📧 sarth4ks@gmail.com
 - 🎓 Amity University Punjab, Mohali
