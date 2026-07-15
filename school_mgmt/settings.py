@@ -31,8 +31,8 @@ CSRF_TRUSTED_ORIGINS = [
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),  # 30 min mein expire
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),      # 7 din valid
-    'ROTATE_REFRESH_TOKENS': True,      # ← new refresh token milega
-    'BLACKLIST_AFTER_ROTATION': True,   # ← purana blacklist ho jayega
+    'ROTATE_REFRESH_TOKENS': True,
+    'BLACKLIST_AFTER_ROTATION': True,
 }
 
 SITE_ID = 1
@@ -151,6 +151,7 @@ DEFAULT_FROM_EMAIL = os.environ.get('EMAIL_HOST_USER')
 AWS_QUERYSTRING_AUTH = False 
 AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+AWS_S3_CUSTOM_DOMAIN = os.environ.get('AWS_S3_CUSTOM_DOMAIN')
 AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-fallback-key')
 AWS_S3_REGION_NAME = 'ap-south-1'
@@ -164,7 +165,7 @@ STORAGES = {
         "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
     },
 }
-AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com'
+#AWS_S3_CUSTOM_DOMAINnnnnn = f'{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com'
 MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'
 
 # Local media (development)
@@ -172,7 +173,12 @@ MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'
 #MEDIA_ROOT = BASE_DIR / 'media'
 
 STATIC_URL = '/static/'
+
+# Development — apne static files yahan rakho
 STATICFILES_DIRS = [BASE_DIR / 'static']
+
+# Production — collectstatic yahan sab collect karega
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
