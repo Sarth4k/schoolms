@@ -197,28 +197,28 @@ on:
 
 ### Home Page
 - School banner/slider (images from S3)
-- <img width="1901" height="891" alt="image" src="https://github.com/user-attachments/assets/3ae9966e-edbb-423d-8421-769a1965b970" />
+ <img width="1901" height="891" alt="image" src="https://github.com/user-attachments/assets/3ae9966e-edbb-423d-8421-769a1965b970" />
 
 - Stats (students, teachers, subjects)
-- <img width="1900" height="1080" alt="image" src="https://github.com/user-attachments/assets/3d4ff7ab-1b9a-40b8-8cbf-cca74a9c59c9" />
+ <img width="1900" height="1080" alt="image" src="https://github.com/user-attachments/assets/3d4ff7ab-1b9a-40b8-8cbf-cca74a9c59c9" />
 
 ### Student Dashboard
 - Admission status
-- <img width="1920" height="881" alt="image" src="https://github.com/user-attachments/assets/35d0017a-047c-4554-83d3-f6e531063f8b" />
+ <img width="1920" height="881" alt="image" src="https://github.com/user-attachments/assets/35d0017a-047c-4554-83d3-f6e531063f8b" />
 
 - Enrolled subjects
-- <img width="1915" height="879" alt="image" src="https://github.com/user-attachments/assets/d95d1939-efcf-452f-9d77-c4136f527aa1" />
+ <img width="1915" height="879" alt="image" src="https://github.com/user-attachments/assets/d95d1939-efcf-452f-9d77-c4136f527aa1" />
 
 - Attendance summary
-- <img width="1916" height="851" alt="image" src="https://github.com/user-attachments/assets/08b8b87c-a3ad-4ebf-a9b0-befd77067885" />
+ <img width="1916" height="851" alt="image" src="https://github.com/user-attachments/assets/08b8b87c-a3ad-4ebf-a9b0-befd77067885" />
 
 
 ### Teacher Dashboard
 - Subject list with enrolled students
-- 
+ <img width="1920" height="780" alt="image" src="https://github.com/user-attachments/assets/132c9104-4f6f-41fd-9c88-02baa5146762" />
 
 - Mark attendance
-- <img width="1916" height="718" alt="image" src="https://github.com/user-attachments/assets/1293d756-bda5-4681-b798-84942bed4ee0" />
+ <img width="1916" height="718" alt="image" src="https://github.com/user-attachments/assets/1293d756-bda5-4681-b798-84942bed4ee0" />
 
 ---
 
