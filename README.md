@@ -170,7 +170,7 @@ EMAIL_HOST_PASSWORD=your-app-password
 
 ## 🚀 Deployment (AWS EC2)
 
-### Server Stack
+### Server Stack.
 ```
 Internet → Nginx (port 80/8080) → Gunicorn (port 8001) → Django
 ```
